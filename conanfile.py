@@ -60,14 +60,14 @@ class OpenSSLConan(ConanFile):
             pass
 
         if not self.options.no_electric_fence and self.settings.os == "Linux":
-            self.requires.add("electric-fence/2.2.0@ViaviSolutions/stable", private=False)
+            self.requires.add("electric-fence/2.2.0@lasote/stable", private=False)
             self.options["electric-fence"].shared = self.options.shared
         else:
             if "electric-fence" in self.requires:
                 del self.requires["electric-fence"]
 
         if not self.options.no_zlib:
-            self.requires.add("zlib/1.2.8@ViaviSolutions/stable", private=False)
+            self.requires.add("zlib/1.2.8@lasote/stable", private=False)
             self.options["zlib"].shared = self.options.zlib_dynamic
 
         else:
