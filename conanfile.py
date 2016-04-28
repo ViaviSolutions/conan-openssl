@@ -11,6 +11,7 @@ class OpenSSLConan(ConanFile):
     url="http://github.com/ViaviSolutions/conan-openssl"
     # https://github.com/openssl/openssl/blob/OpenSSL_1_0_2c/INSTALL
     options = {"no_threads": [True, False],
+               "no_electric_fence": [True, False],
                "no_zlib": [True, False],
                "zlib_dynamic": [True, False],
                "shared": [True, False],
@@ -58,7 +59,7 @@ class OpenSSLConan(ConanFile):
         except:
             pass
 
-        if self.settings.os == "Linux":
+        if not self.options.no_electric_fence and self.settings.os == "Linux":
             self.requires.add("electric-fence/2.2.0@ViaviSolutions/stable", private=False)
             self.options["electric-fence"].shared = self.options.shared
         else:
@@ -105,6 +106,9 @@ class OpenSSLConan(ConanFile):
                 config_options_string += ' -L"%s" -I"%s" %s' % (self.deps_cpp_info["electric-fence"].lib_paths[0],
                                                                 self.deps_cpp_info["electric-fence"].include_paths[0],
                                                                 libs)
+            else:
+                replace_in_file("./openssl-%s/Configure" % self.version, "::-lefence::", "::")
+                replace_in_file("./openssl-%s/Configure" % self.version, "::-lefence ", "::")
             self.output.warn("=====> Options: %s" % config_options_string)
 
         for option_name in self.options.values.fields:
