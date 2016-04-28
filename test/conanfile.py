@@ -3,7 +3,7 @@ from conans import CMake
 import os
 
 ############### CONFIGURE THESE VALUES ##################
-default_user = "lasote"
+default_user = "ViaviSolutions"
 default_channel = "testing"
 #########################################################
 
@@ -25,6 +25,6 @@ class DefaultNameConan(ConanFile):
     def imports(self):
         self.copy(pattern="*.dll", dst="bin", src="bin")
         self.copy(pattern="*.dylib", dst="bin", src="lib")
-        
+
     def test(self):
         self.run("cd bin && .%smd5" % (os.sep))

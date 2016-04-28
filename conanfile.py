@@ -8,7 +8,7 @@ class OpenSSLConan(ConanFile):
     name = "OpenSSL"
     version = "1.0.2g"
     settings = "os", "compiler", "arch", "build_type"
-    url="http://github.com/lasote/conan-openssl"
+    url="http://github.com/ViaviSolutions/conan-openssl"
     # https://github.com/openssl/openssl/blob/OpenSSL_1_0_2c/INSTALL
     options = {"no_threads": [True, False],
                "no_zlib": [True, False],
@@ -42,31 +42,31 @@ class OpenSSLConan(ConanFile):
     def source(self):
         self.output.info("Downloading %s" % self.source_tgz)
         try:
-            tools.download(self.source_tgz_old, "openssl.tar.gz")            
+            tools.download(self.source_tgz_old, "openssl.tar.gz")
             tools.unzip("openssl.tar.gz", ".")
         except:
             tools.download(self.source_tgz, "openssl.tar.gz")
             tools.unzip("openssl.tar.gz", ".")
-        
+
         tools.check_sha256("openssl.tar.gz", "b784b1b3907ce39abf4098702dade6365522a253ad1552e267a9a0e89594aa33")
         os.unlink("openssl.tar.gz")
 
     def config(self):
-       
+
         try: # Try catch can be removed when conan 0.8 is released
-            del self.settings.compiler.libcxx 
-        except: 
+            del self.settings.compiler.libcxx
+        except:
             pass
-        
+
         if self.settings.os == "Linux":
-            self.requires.add("electric-fence/2.2.0@lasote/stable", private=False)
+            self.requires.add("electric-fence/2.2.0@ViaviSolutions/stable", private=False)
             self.options["electric-fence"].shared = self.options.shared
         else:
             if "electric-fence" in self.requires:
                 del self.requires["electric-fence"]
-        
+
         if not self.options.no_zlib:
-            self.requires.add("zlib/1.2.8@lasote/stable", private=False)
+            self.requires.add("zlib/1.2.8@ViaviSolutions/stable", private=False)
             self.options["zlib"].shared = self.options.zlib_dynamic
 
         else:
@@ -83,12 +83,12 @@ class OpenSSLConan(ConanFile):
              - perl: http://www.activestate.com/activeperl/downloads
              - nasm: http://www.nasm.us/
 
-            Put perl and nasm bin folder in USER PATH (not system path, so the visual 2010 command system symbol can find it) 
+            Put perl and nasm bin folder in USER PATH (not system path, so the visual 2010 command system symbol can find it)
             Open the visual 2010 command system symbol and run conan.
 
             Here are good page explaining it: http://hostagebrain.blogspot.com.es/2015/04/build-openssl-on-windows.html
         '''
-       
+
         config_options_string = ""
 
         if self.deps_cpp_info.include_paths:
@@ -102,7 +102,7 @@ class OpenSSLConan(ConanFile):
             # EFENCE LINK
             if "electric-fence" in self.requires:
                 libs = " ".join([ "-l%s" % lib for lib in self.deps_cpp_info["electric-fence"].libs])
-                config_options_string += ' -L"%s" -I"%s" %s' % (self.deps_cpp_info["electric-fence"].lib_paths[0], 
+                config_options_string += ' -L"%s" -I"%s" %s' % (self.deps_cpp_info["electric-fence"].lib_paths[0],
                                                                 self.deps_cpp_info["electric-fence"].include_paths[0],
                                                                 libs)
             self.output.warn("=====> Options: %s" % config_options_string)
@@ -136,7 +136,7 @@ class OpenSSLConan(ConanFile):
                 else:
                     command = "./config %s %s" % (config_options_string, m32_suff)
                 run_in_src(command)
-                # REPLACE -install_name FOR FOLLOW THE CONAN RULES, 
+                # REPLACE -install_name FOR FOLLOW THE CONAN RULES,
                 # DYNLIBS IDS AND OTHER DYNLIB DEPS WITHOUT PATH, JUST THE LIBRARY NAME
                 old_str = 'SHAREDFLAGS="$$SHAREDFLAGS -install_name $(INSTALLTOP)/$(LIBDIR)/$$SHLIB$'
                 new_str = 'SHAREDFLAGS="$$SHAREDFLAGS -install_name $$SHLIB$'
@@ -190,7 +190,7 @@ class OpenSSLConan(ConanFile):
         return
 
     def package(self):
-        self.copy("FindOpenSSL.cmake", ".", ".")        
+        self.copy("FindOpenSSL.cmake", ".", ".")
         self.copy(pattern="*applink.c", dst="include/openssl/", keep_path=False)
         if self.settings.os == "Windows":
             self._copy_visual_binaries()

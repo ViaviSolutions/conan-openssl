@@ -3,16 +3,16 @@ environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
     PYTHON_ARCH: "32"
-    
+
     CONAN_UPLOAD: 1
     CONAN_REFERENCE: "OpenSSL/1.0.2g"
-    CONAN_USERNAME: "lasote"
+    CONAN_USERNAME: "ViaviSolutions"
     CONAN_CHANNEL: "ci"
     CONAN_TOTAL_PAGES: 20
-    
+
     matrix:
         - CONAN_CURRENT_PAGE: 1
-        - CONAN_CURRENT_PAGE: 2  
+        - CONAN_CURRENT_PAGE: 2
         - CONAN_CURRENT_PAGE: 3
         - CONAN_CURRENT_PAGE: 4
         - CONAN_CURRENT_PAGE: 5
@@ -22,7 +22,7 @@ environment:
         - CONAN_CURRENT_PAGE: 9
         - CONAN_CURRENT_PAGE: 10
         - CONAN_CURRENT_PAGE: 11
-        - CONAN_CURRENT_PAGE: 12  
+        - CONAN_CURRENT_PAGE: 12
         - CONAN_CURRENT_PAGE: 13
         - CONAN_CURRENT_PAGE: 14
         - CONAN_CURRENT_PAGE: 15
